@@ -1,8 +1,15 @@
 package edu.stanford.w3
 
-import edu.stanford.common.MatrixPrinter
+import java.nio.file.{Files, Paths, Path}
+
+import edu.stanford.common.CommonUtils.resourse2stream
+import edu.stanford.common.{CommonUtils, MatrixPrinter}
 import edu.stanford.common.MatrixPrinter.Mode.VAR_ROW
+import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.StringUtils.{SPACE, normalizeSpace}
 import org.scalatest.{FlatSpec, Matchers}
+
+import scala.io.Source
 
 class GraphSpec extends FlatSpec with Matchers {
 
@@ -18,6 +25,10 @@ class GraphSpec extends FlatSpec with Matchers {
     )
   }
 
+  trait ProgQuestion3 {
+    val testGraph = UndirectedGraph.fromAdjacencyMatrix(parseMatrix("kargerMinCut.txt"))
+  }
+
   it should "build adjacency matrix from graph" in new TestGraph {
     println(MatrixPrinter.printMatrix(graph.adjacencyMatrix, VAR_ROW))
   }
@@ -27,8 +38,27 @@ class GraphSpec extends FlatSpec with Matchers {
     matrix2set(reBuiltGraph.adjacencyMatrix) shouldEqual matrix2set(graph.adjacencyMatrix)
   }
 
+  "Random contractions algorithm" should "contract graph" in new TestGraph {
+    val result = RandomContractions.contract(graph)
+    println(result)
+  }
+
+  it should "produce minimum cut of a graph" in new ProgQuestion3 {
+    println(RandomContractions.contract(testGraph))
+  }
+
   private def matrix2set(matrix: Array[Array[String]]): Set[Set[String]] = {
     matrix.map(_.toSet).toSet
+  }
+
+  private def parseMatrix(fileName: String): Array[Array[String]] = {
+    val source = Source.fromURI(ClassLoader.getSystemResource(fileName).toURI)
+
+    val result = for {
+      line <- source.getLines()
+    } yield normalizeSpace(line).split(SPACE)
+
+    result.toArray
   }
 
 }
