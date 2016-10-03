@@ -4,7 +4,7 @@ import edu.stanford.w3.UndirectedGraph.UndirectedEdge
 
 object UndirectedGraph {
 
-  case class UndirectedEdge(val head: Vertex, val tail: Vertex) extends Edge {
+  case class UndirectedEdge(head: Vertex, tail: Vertex) extends Edge {
 
     def contains(vertex: Vertex): Boolean = {
       vertex.label == head.label || vertex.label == tail.label

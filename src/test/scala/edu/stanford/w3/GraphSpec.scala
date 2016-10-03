@@ -1,11 +1,8 @@
 package edu.stanford.w3
 
-import java.nio.file.{Files, Paths, Path}
-
-import edu.stanford.common.CommonUtils.resourse2stream
-import edu.stanford.common.{CommonUtils, MatrixPrinter}
+import edu.stanford.Benchmark
+import edu.stanford.common.MatrixPrinter
 import edu.stanford.common.MatrixPrinter.Mode.VAR_ROW
-import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.StringUtils.{SPACE, normalizeSpace}
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -44,7 +41,14 @@ class GraphSpec extends FlatSpec with Matchers {
   }
 
   it should "produce minimum cut of a graph" in new ProgQuestion3 {
-    println(RandomContractions.contract(testGraph))
+    val n = 10
+
+    val results = (1 to n)
+      .map(i => Benchmark.run(RandomContractions.contract(testGraph)))
+
+    println(s"Average execution time ${results.map(_.duration).sum / n} ms")
+
+    println(s"Minimum cut ${results.map(_.result.crossingEdges).min}")
   }
 
   private def matrix2set(matrix: Array[Array[String]]): Set[Set[String]] = {
