@@ -1,7 +1,7 @@
 package edu.stanford.w3
 
 import edu.stanford.common.Assertions._
-import edu.stanford.w3.UndirectedGraph.UndirectedEdge
+import graph.{Edge, Graph, Vertex}
 import org.apache.commons.lang3.RandomUtils
 
 import scala.annotation.tailrec
@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 
 object RandomContractions {
 
-  def contract(graph: UndirectedGraph): ContractionResult = {
+  def contract(graph: Graph[_ <: Edge]): ContractionResult = {
     assertSizeGt(1, graph.vertices)
 
     doContract(ContractedGraph(graph)) match {
@@ -56,7 +56,7 @@ case class ComposedVertex(vertices: Set[Vertex]) {
 }
 
 object ContractableEdge {
-  def apply(edge: UndirectedEdge): ContractableEdge = ContractableEdge(ComposedVertex(edge.head), ComposedVertex(edge.tail))
+  def apply(edge: Edge): ContractableEdge = ContractableEdge(ComposedVertex(edge.head), ComposedVertex(edge.tail))
 }
 
 case class ContractableEdge(head: ComposedVertex, tail: ComposedVertex) {
@@ -64,7 +64,7 @@ case class ContractableEdge(head: ComposedVertex, tail: ComposedVertex) {
 }
 
 object ContractedGraph {
-  def apply(graph: UndirectedGraph): ContractedGraph = {
+  def apply(graph: Graph[_ <: Edge]): ContractedGraph = {
     val cVertexes = graph.vertices.map(ComposedVertex(_)).toList
     val cEdges = graph.edges.map(ContractableEdge(_))
 

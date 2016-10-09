@@ -3,6 +3,7 @@ package edu.stanford.w3
 import edu.stanford.Benchmark
 import edu.stanford.common.MatrixPrinter
 import edu.stanford.common.MatrixPrinter.Mode.VAR_ROW
+import graph.{DirectedGraph, UndirectedGraph}
 import org.apache.commons.lang3.StringUtils.{SPACE, normalizeSpace}
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -11,7 +12,7 @@ import scala.io.Source
 class GraphSpec extends FlatSpec with Matchers {
 
   trait TestGraph {
-    val graph = new UndirectedGraph().addAll(
+    val graph = new DirectedGraph().addAll(
       ("1", "2"),
       ("2", "3"),
       ("3", "4"),
@@ -30,9 +31,9 @@ class GraphSpec extends FlatSpec with Matchers {
     println(MatrixPrinter.printMatrix(graph.adjacencyMatrix, VAR_ROW))
   }
 
-  it should "create graph from adjacency matrix" in new TestGraph {
-    val reBuiltGraph = UndirectedGraph.fromAdjacencyMatrix(graph.adjacencyMatrix)
-    matrix2set(reBuiltGraph.adjacencyMatrix) shouldEqual matrix2set(graph.adjacencyMatrix)
+  it should "create graph from adjacency matrix" in new ProgQuestion3 {
+    val reBuiltGraph = UndirectedGraph.fromAdjacencyMatrix(testGraph.adjacencyMatrix)
+    matrix2set(reBuiltGraph.adjacencyMatrix) shouldEqual matrix2set(testGraph.adjacencyMatrix)
   }
 
   "Random contractions algorithm" should "contract graph" in new TestGraph {
@@ -41,7 +42,7 @@ class GraphSpec extends FlatSpec with Matchers {
   }
 
   it should "produce minimum cut of a graph" in new ProgQuestion3 {
-    val n = 10
+    val n = 2
 
     val results = (1 to n)
       .map(i => Benchmark.run(RandomContractions.contract(testGraph)))
