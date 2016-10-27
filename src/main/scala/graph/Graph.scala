@@ -11,54 +11,60 @@ object Graph {
   }
 }
 
-trait Graph[T <: Edge] {
+trait Graph {
 
-  val edges: List[T]
+  val edges: List[Edge]
 
   val vertices: Set[Vertex]
 
-  protected val adjacencyMap: Map[Vertex, List[T]] =
+  protected val adjacencyMap: Map[Vertex, List[Edge]] =
     vertices.map(vertex => (vertex, edges.filter(_.incidentOn(vertex)))).toMap
 
   def vertex(label: String): Option[Vertex] = {
     vertices.find(_.label == label)
   }
 
-  def edge(headVtx: Vertex, tailVtx: Vertex): Option[T] = {
+  def edge(headVtx: Vertex, tailVtx: Vertex): Option[Edge] = {
     adjacencyMap(headVtx).find(_.incidentOn(tailVtx))
   }
 
-  def edge(headLabel: String, tailLabel: String): Option[T] = {
+  def edge(headLabel: String, tailLabel: String): Option[Edge] = {
     (vertex(headLabel), vertex(tailLabel)) match {
       case (Some(head), Some(tail)) => edge(head, tail)
       case _ => None
     }
   }
 
-  protected def add(vertex: Vertex): Graph[T]
+  protected def newGraph(edges: List[Edge], vertices: Set[Vertex]): Graph
 
-  protected def add(edge: T): Graph[T]
+  protected def add(vertex: Vertex): Graph = {
+    newGraph(edges, vertices + vertex)
+  }
 
-  def add(label: String): Graph[T] = {
+  protected def add(edge: Edge): Graph = {
+    newGraph(edges :+ edge, vertices + edge.head + edge.tail)
+  }
+
+  def add(label: String): Graph = {
     add(Vertex(label))
   }
 
-  def add(headLabel: String, tailLabel: String): Graph[T] = {
+  def add(headLabel: String, tailLabel: String): Graph = {
     edge(headLabel, tailLabel) match {
       case None => add(newEdge(headLabel, tailLabel))
       case _ => this
     }
   }
 
-  protected def newEdge(head: Vertex, tail: Vertex): T
+  protected def newEdge(head: Vertex, tail: Vertex): Edge
 
-  protected def newEdge(headLabel: String, tailLabel: String): T = {
+  protected def newEdge(headLabel: String, tailLabel: String): Edge = {
     newEdge(Vertex(headLabel), Vertex(tailLabel))
   }
 
-  def addAll(labelPairs: (String, String)*): Graph[T] = {
+  def addAll(labelPairs: (String, String)*): Graph = {
 
-    def doAdd(labelPairs: List[(String, String)], graph: Graph[T]): Graph[T] = {
+    def doAdd(labelPairs: List[(String, String)], graph: Graph): Graph = {
       labelPairs match {
         case (head, tail) :: rest => doAdd(rest, graph.add(head, tail))
         case Nil => graph
@@ -68,11 +74,11 @@ trait Graph[T <: Edge] {
     doAdd(labelPairs.toList, this)
   }
 
-  def delete(headLabel: String, tailLabel: String): Graph[T] = {
+  def delete(headLabel: String, tailLabel: String): Graph = {
     throw new NotImplementedError()
   }
 
-  def delete(label: String): Graph[T] = {
+  def delete(label: String): Graph = {
     throw new NotImplementedError()
   }
 
@@ -83,7 +89,7 @@ trait Graph[T <: Edge] {
       .toArray
   }
 
-  protected def neighbours(vertex: Vertex): List[Vertex]
+  def neighbours(vertex: Vertex): List[Vertex]
 
 }
 

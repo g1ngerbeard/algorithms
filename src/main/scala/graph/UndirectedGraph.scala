@@ -2,7 +2,7 @@ package graph
 
 object UndirectedGraph {
 
-  def fromAdjacencyMatrix(matrix: Array[Array[String]]): Graph[UndirectedEdge] = {
+  def fromAdjacencyMatrix(matrix: Array[Array[String]]): Graph = {
     new UndirectedGraph().addAll(Graph.parseAdjMatrix(matrix): _*)
   }
 
@@ -15,16 +15,12 @@ case class UndirectedEdge(head: Vertex, tail: Vertex) extends Edge {
   }
 }
 
-class UndirectedGraph(val edges: List[UndirectedEdge] = List(),
+class UndirectedGraph(val edges: List[Edge] = List(),
                       val vertices: Set[Vertex] = Set())
-  extends Graph[UndirectedEdge] {
+  extends Graph {
 
-  protected def add(vertex: Vertex): Graph[UndirectedEdge] = {
-    new UndirectedGraph(edges, vertices + vertex)
-  }
-
-  protected def add(edge: UndirectedEdge): Graph[UndirectedEdge] = {
-    new UndirectedGraph(edges :+ edge, vertices ++ Set(edge.head, edge.tail))
+  override protected def newGraph(edges: List[Edge], vertices: Set[Vertex]): Graph = {
+    new UndirectedGraph(edges, vertices)
   }
 
   override protected def newEdge(head: Vertex, tail: Vertex): UndirectedEdge = {

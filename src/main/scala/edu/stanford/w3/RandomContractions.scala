@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 
 object RandomContractions {
 
-  def contract(graph: Graph[_ <: Edge]): ContractionResult = {
+  def contract(graph: Graph): ContractionResult = {
     assertSizeGt(1, graph.vertices)
 
     doContract(ContractedGraph(graph)) match {
@@ -64,7 +64,7 @@ case class ContractableEdge(head: ComposedVertex, tail: ComposedVertex) {
 }
 
 object ContractedGraph {
-  def apply(graph: Graph[_ <: Edge]): ContractedGraph = {
+  def apply(graph: Graph): ContractedGraph = {
     val cVertexes = graph.vertices.map(ComposedVertex(_)).toList
     val cEdges = graph.edges.map(ContractableEdge(_))
 
