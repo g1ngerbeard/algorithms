@@ -2,49 +2,58 @@ package edu.stanford.w4
 
 import graph.{Graph, Vertex}
 
-import scala.collection.immutable.Queue
+import scala.annotation.tailrec
+import scala.collection.immutable.{Queue, TreeMap}
 
 object GraphUtils {
 
-  // todo: return layers
-  // todo: start vertex
-  def bfs[T](graph: Graph, firstLabel: String): Unit = {
+  def bfs(graph: Graph, firstLabel: String): Map[String, Int] = {
 
-    def bfs(explored: Set[Vertex], queue: Queue[Vertex]): Unit = {
+    @tailrec
+    def bfs(explored: Set[Vertex], queue: Queue[Vertex], dist: Map[Vertex, Int]): Map[Vertex, Int] = {
       queue.dequeueOption match {
         case Some((vertex, rest)) =>
-          val unexplored = graph.neighbours(vertex)
-            .filterNot(explored.contains)
+          val currDist = dist(vertex)
 
-          bfs(explored + vertex, rest ++ unexplored)
-        case None =>
+          val exploredDist = graph.neighbours(vertex)
+            .filterNot(explored.contains)
+            .map(_ -> (currDist + 1))
+            .toMap
+
+          val vertexes = exploredDist.keySet
+
+          bfs(explored ++ vertexes, rest.enqueue(vertexes), dist ++ exploredDist)
+
+        case None => dist
       }
     }
 
     graph.vertex(firstLabel) match {
-      case Some(vertex) => bfs(Set(), Queue(vertex))
+      case Some(vertex) =>
+        bfs(Set(vertex), Queue(vertex), Map(vertex -> 0))
+          .map { case (Vertex(label), dist) => (label, dist) }
       case _ => throw new IllegalArgumentException("Non existent vertex")
     }
 
   }
 
-  def dfs[T](graph: Graph, startLabel: String): Unit = {
+  def layers(graph: Graph, firstLabel: String): Map[Int, Set[String]] = {
+    val dist = bfs(graph, firstLabel)
 
-    def dfs(explored: Set[Vertex], stack: List[Vertex]): Unit = {
-      stack match {
-        case vertex::rest =>
-//          val unexplored = graph.neighbours(vertex)
-//            .filterNot(explored.contains)
-//          dfs(explored + vertex, unexplored ::: rest)
-        case Nil =>
-      }
-
+    dist.foldLeft(TreeMap[Int, Set[String]]().withDefaultValue(Set())) {
+      case (res, (label, d)) => res + (d -> (res(d) + label))
     }
-
-    graph.vertex(startLabel) match {
-      case Some(vertex) => dfs(Set(vertex), List(vertex))
-      case _ => throw new IllegalArgumentException("Non existent vertex")
-    }
-
   }
+
+  def connectedComponents(graph: Graph): List[Set[String]] = {
+    graph.vertices.foldLeft(List[Set[String]]()) {
+      case (comp, vert) =>
+        if (comp.exists(_.contains(vert.label))) {
+          comp
+        } else {
+          comp :+ bfs(graph, vert.label).keySet
+        }
+    }
+  }
+
 }

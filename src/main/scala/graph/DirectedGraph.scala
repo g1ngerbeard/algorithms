@@ -20,7 +20,7 @@ class DirectedGraph(val edges: List[Edge] = List(),
     new DirectedGraph(edges, vertices)
   }
 
-  override protected def neighbours(vertex: Vertex): List[Vertex] = {
+  override def neighbours(vertex: Vertex): List[Vertex] = {
     adjacencyMap(vertex).map(_.tail)
   }
 

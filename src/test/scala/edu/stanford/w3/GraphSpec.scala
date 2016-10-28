@@ -3,23 +3,38 @@ package edu.stanford.w3
 import edu.stanford.Benchmark
 import edu.stanford.common.MatrixPrinter
 import edu.stanford.common.MatrixPrinter.Mode.VAR_ROW
-import graph.{DirectedGraph, UndirectedGraph}
-import org.apache.commons.lang3.StringUtils.{SPACE, normalizeSpace}
+import edu.stanford.common.TestUtils.parseMatrix
+import edu.stanford.w4.GraphUtils
+import graph.UndirectedGraph
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.io.Source
 
 class GraphSpec extends FlatSpec with Matchers {
 
   trait TestGraph {
-    val graph = new DirectedGraph().addAll(
-      ("1", "2"),
-      ("2", "3"),
-      ("3", "4"),
-      ("4", "1"),
-      ("3", "1"),
-      ("5", "1"),
-      ("5", "2")
+    val graph = new UndirectedGraph().addAll(
+      "1" -> "2",
+      "2" -> "3",
+      "3" -> "4",
+      "4" -> "1",
+      "5" -> "1",
+      "5" -> "2",
+      "3" -> "7",
+      "5" -> "6",
+      "6" -> "7"
+    )
+  }
+
+  trait UnConnectedTestGrapth {
+    val graph = new UndirectedGraph().addAll(
+      "a" -> "b",
+      "a" -> "c",
+      "a" -> "d",
+      "c" -> "b",
+      "c" -> "d",
+      "f" -> "e",
+      "g" -> "k",
+      "k" -> "l",
+      "g" -> "l"
     )
   }
 
@@ -42,7 +57,7 @@ class GraphSpec extends FlatSpec with Matchers {
   }
 
   it should "produce minimum cut of a graph" in new ProgQuestion3 {
-    val n = 2
+    val n = 10
 
     val results = (1 to n)
       .map(i => Benchmark.run(RandomContractions.contract(testGraph)))
@@ -52,18 +67,16 @@ class GraphSpec extends FlatSpec with Matchers {
     println(s"Minimum cut ${results.map(_.result.crossingEdges).min}")
   }
 
-  private def matrix2set(matrix: Array[Array[String]]): Set[Set[String]] = {
-    matrix.map(_.toSet).toSet
+  "BFS" should "produce layers of the graph" in new TestGraph {
+    println(GraphUtils.layers(graph, "1"))
   }
 
-  private def parseMatrix(fileName: String): Array[Array[String]] = {
-    val source = Source.fromURI(ClassLoader.getSystemResource(fileName).toURI)
+  it should "compute connected components" in new UnConnectedTestGrapth {
+    println(GraphUtils.connectedComponents(graph))
+  }
 
-    val result = for {
-      line <- source.getLines()
-    } yield normalizeSpace(line).split(SPACE)
-
-    result.toArray
+  private def matrix2set(matrix: Array[Array[String]]): Set[Set[String]] = {
+    matrix.map(_.toSet).toSet
   }
 
 }

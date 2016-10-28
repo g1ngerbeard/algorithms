@@ -27,7 +27,7 @@ class UndirectedGraph(val edges: List[Edge] = List(),
     UndirectedEdge(head, tail)
   }
 
-  protected def neighbours(vertex: Vertex): List[Vertex] = {
+  override def neighbours(vertex: Vertex): List[Vertex] = {
     adjacencyMap(vertex)
       .map {
         case UndirectedEdge(`vertex`, tail) => tail
