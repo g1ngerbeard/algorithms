@@ -1,12 +1,12 @@
 //package edu.stanford.w3;
 //
-//import edu.stanford.w3.graph.UndirectedGraph;
+//import edu.stanford.w3.edu.stanford.graph.UndirectedGraph;
 //import org.junit.Test;
 //
 //import static edu.stanford.common.MatrixPrinter.Mode.VAR_ROW;
 //import static edu.stanford.common.MatrixPrinter.printMatrix;
-//import static edu.stanford.w3.graph.RandomContractions.contract;
-//import static edu.stanford.w3.graph.UndirectedGraph.fromAdjMatrix;
+//import static edu.stanford.w3.edu.stanford.graph.RandomContractions.contract;
+//import static edu.stanford.w3.edu.stanford.graph.UndirectedGraph.fromAdjMatrix;
 //
 //public class GraphTest {
 //
@@ -25,17 +25,17 @@
 //
 //    @Test
 //    public void testGraphPrinting() {
-//        UndirectedGraph graph = createTestGraph();
-//        System.out.println(graph.toString());
+//        UndirectedGraph edu.stanford.graph = createTestGraph();
+//        System.out.println(edu.stanford.graph.toString());
 //    }
 //
 //    @Test
 //    public void testContractions() {
-//        UndirectedGraph graph = createTestGraph();
+//        UndirectedGraph edu.stanford.graph = createTestGraph();
 //
-//        System.out.println(graph);
+//        System.out.println(edu.stanford.graph);
 //
-//        System.out.println(contract(graph));
+//        System.out.println(contract(edu.stanford.graph));
 //    }
 //
 //    @Test
@@ -44,19 +44,19 @@
 //        System.out.println(testGraph);
 //
 //        String[][] adjacencyMatrix = testGraph.buildAdjacencyMatrix();
-//        UndirectedGraph graph = fromAdjMatrix(adjacencyMatrix);
-//        System.out.println(graph);
+//        UndirectedGraph edu.stanford.graph = fromAdjMatrix(adjacencyMatrix);
+//        System.out.println(edu.stanford.graph);
 //    }
 //
 //    private UndirectedGraph createTestGraph() {
-//        UndirectedGraph graph = new UndirectedGraph();
-//        graph.addEdge("1", "2");
-//        graph.addEdge("2", "3");
-//        graph.addEdge("3", "4");
-//        graph.addEdge("4", "1");
-//        graph.addEdge("3", "1");
-//        graph.addEdge("5", "1");
-//        return graph;
+//        UndirectedGraph edu.stanford.graph = new UndirectedGraph();
+//        edu.stanford.graph.addEdge("1", "2");
+//        edu.stanford.graph.addEdge("2", "3");
+//        edu.stanford.graph.addEdge("3", "4");
+//        edu.stanford.graph.addEdge("4", "1");
+//        edu.stanford.graph.addEdge("3", "1");
+//        edu.stanford.graph.addEdge("5", "1");
+//        return edu.stanford.graph;
 //    }
 //
 //}

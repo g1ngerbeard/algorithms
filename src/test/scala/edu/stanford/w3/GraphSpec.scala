@@ -4,8 +4,9 @@ import edu.stanford.Benchmark
 import edu.stanford.common.MatrixPrinter
 import edu.stanford.common.MatrixPrinter.Mode.VAR_ROW
 import edu.stanford.common.TestUtils.parseMatrix
+import edu.stanford.graph.immutable.UndirectedGraph
 import edu.stanford.w4.GraphUtils
-import graph.UndirectedGraph
+import edu.stanford.graph.WeightedUndirectedGraph
 import org.scalatest.{FlatSpec, Matchers}
 
 class GraphSpec extends FlatSpec with Matchers {
@@ -42,21 +43,21 @@ class GraphSpec extends FlatSpec with Matchers {
     val testGraph = UndirectedGraph.fromAdjacencyMatrix(parseMatrix("kargerMinCut.txt"))
   }
 
-  it should "build adjacency matrix from graph" in new TestGraph {
+  it should "build adjacency matrix from edu.stanford.graph" in new TestGraph {
     println(MatrixPrinter.printMatrix(graph.adjacencyMatrix, VAR_ROW))
   }
 
-  it should "create graph from adjacency matrix" in new ProgQuestion3 {
+  it should "create edu.stanford.graph from adjacency matrix" in new ProgQuestion3 {
     val reBuiltGraph = UndirectedGraph.fromAdjacencyMatrix(testGraph.adjacencyMatrix)
     matrix2set(reBuiltGraph.adjacencyMatrix) shouldEqual matrix2set(testGraph.adjacencyMatrix)
   }
 
-  "Random contractions algorithm" should "contract graph" in new TestGraph {
+  "Random contractions algorithm" should "contract edu.stanford.graph" in new TestGraph {
     val result = RandomContractions.contract(graph)
     println(result)
   }
 
-  it should "produce minimum cut of a graph" in new ProgQuestion3 {
+  ignore should "produce minimum cut of a edu.stanford.graph" in new ProgQuestion3 {
     val n = 10
 
     val results = (1 to n)
@@ -67,7 +68,7 @@ class GraphSpec extends FlatSpec with Matchers {
     println(s"Minimum cut ${results.map(_.result.crossingEdges).min}")
   }
 
-  "BFS" should "produce layers of the graph" in new TestGraph {
+  "BFS" should "produce layers of the edu.stanford.graph" in new TestGraph {
     println(GraphUtils.layers(graph, "1"))
   }
 

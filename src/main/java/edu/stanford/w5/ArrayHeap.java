@@ -34,15 +34,21 @@ public class ArrayHeap<K extends Comparable<K>, V> implements Heap<K, V> {
     }
 
     @Override
-    public V extractMin() {
+    public Pair<K, V> extractMin() {
         Pair<K, V> node = nodes.pollFirst();
         if (node != null) {
             nodes.addFirst(nodes.pollLast());
             bubbleDown(0);
-            return node.getValue();
+            return node;
         } else {
             return null;
         }
+
+    }
+
+    @Override
+    public V extractMinValue() {
+        return extractMin().getValue();
     }
 
     private void bubbleDown(int i) {

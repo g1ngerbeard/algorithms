@@ -1,7 +1,7 @@
 package edu.stanford.w3
 
 import edu.stanford.common.Assertions._
-import graph.{Edge, Graph, Vertex}
+import edu.stanford.graph.immutable.{Vertex, Edge, Graph}
 import org.apache.commons.lang3.RandomUtils
 
 import scala.annotation.tailrec

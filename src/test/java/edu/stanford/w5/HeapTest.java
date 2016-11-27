@@ -20,11 +20,11 @@ public class HeapTest {
                 pair(4, "four")
         ));
 
-        Assert.assertEquals(heap.extractMin(), "one");
-        Assert.assertEquals(heap.extractMin(), "one");
-        Assert.assertEquals(heap.extractMin(), "two");
-        Assert.assertEquals(heap.extractMin(), "four");
-        Assert.assertEquals(heap.extractMin(), "ten");
-        Assert.assertEquals(heap.extractMin(), null);
+        Assert.assertEquals(heap.extractMinValue(), "one");
+        Assert.assertEquals(heap.extractMinValue(), "one");
+        Assert.assertEquals(heap.extractMinValue(), "two");
+        Assert.assertEquals(heap.extractMinValue(), "four");
+        Assert.assertEquals(heap.extractMinValue(), "ten");
+        Assert.assertEquals(heap.extractMinValue(), null);
     }
 }

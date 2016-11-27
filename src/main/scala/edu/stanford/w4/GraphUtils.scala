@@ -1,6 +1,6 @@
 package edu.stanford.w4
 
-import graph.{Graph, Vertex}
+import edu.stanford.graph.immutable.{Graph, Vertex}
 
 import scala.annotation.tailrec
 import scala.collection.immutable.{Queue, TreeMap}

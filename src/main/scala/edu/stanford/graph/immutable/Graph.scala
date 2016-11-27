@@ -1,4 +1,4 @@
-package graph
+package edu.stanford.graph.immutable
 
 object Graph {
   def parseAdjMatrix(matrix: Array[Array[String]]): Array[(String, String)] = {

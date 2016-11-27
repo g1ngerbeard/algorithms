@@ -1,12 +1,5 @@
-package graph
+package edu.stanford.graph.immutable
 
-object DirectedGraph {
-
-  def fromAdjacencyMatrix(matrix: Array[Array[String]]): Graph = {
-    new DirectedGraph().addAll(Graph.parseAdjMatrix(matrix): _*)
-  }
-
-}
 
 class DirectedGraph(val edges: List[Edge] = List(),
                     val vertices: Set[Vertex] = Set())

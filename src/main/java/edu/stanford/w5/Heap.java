@@ -15,6 +15,8 @@ public interface Heap<K extends Comparable<K>, V> {
 
     V delete(K key);
 
-    V extractMin();
+    V extractMinValue();
+
+    Pair<K, V> extractMin();
 
 }
