@@ -24,7 +24,7 @@ object ShortestPath {
 
     }
 
-    for (i <- 1 to (graph.vertices.size - 1)) {
+    for (i <- 1 until graph.vertices.size) {
       minValue() match {
         case (head, tail, weight) =>
           processed += tail
