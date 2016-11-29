@@ -1,10 +1,9 @@
 package edu.stanford.w4
 
+import edu.stanford.common.TestUtils.getResourceLines
 import edu.stanford.graph.FastDirectedGraph
 import org.apache.commons.lang3.StringUtils._
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.io.Source
 
 class ConnectedComponentsSpec extends FlatSpec with Matchers {
 
@@ -45,15 +44,10 @@ class ConnectedComponentsSpec extends FlatSpec with Matchers {
   }
 
   private def buildTestPairs(resourse: String): Array[(String, String)] = {
-
-    val source = Source.fromURI(ClassLoader.getSystemResource(resourse).toURI)
-
-    source
-      .getLines()
+    getResourceLines(resourse)
       .map(line => line.split(SPACE))
       .map(pair => (pair(0), pair(1)))
       .toArray
-
   }
 
 }

@@ -15,4 +15,10 @@ object TestUtils {
     result.toArray
   }
 
+  def getResourceLines(resourse: String): Iterator[String] = {
+    Source
+      .fromURI(ClassLoader.getSystemResource(resourse).toURI)
+      .getLines()
+  }
+
 }

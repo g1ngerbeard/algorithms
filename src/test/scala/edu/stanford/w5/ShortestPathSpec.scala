@@ -1,5 +1,7 @@
 package edu.stanford.w5
 
+import edu.stanford.common.TestUtils
+import edu.stanford.common.TestUtils.getResourceLines
 import edu.stanford.graph.WeightedUndirectedGraph
 import edu.stanford.w5.ShortestPath.shortestPaths
 import org.scalatest.{FlatSpec, Matchers}
@@ -47,9 +49,7 @@ class ShortestPathSpec extends FlatSpec with Matchers {
 
   def pq4Graph(file: String): WeightedUndirectedGraph = {
 
-    val tuples = Source
-      .fromURI(ClassLoader.getSystemResource(file).toURI)
-      .getLines()
+    val tuples = getResourceLines(file)
       .flatMap(parseLine)
       .toArray
 
